@@ -1,3 +1,8 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 #RedWine Dataset Exploratory Data Analysis
 
 ####The main motto of this report is to explore and find out the factors which influence the quality ratings of Wine. This in turn can help the company which produces wine, to improve the qualities on which it can work on to give a better quality product. 
@@ -42,7 +47,6 @@ wine$rating <- ordered(wine$rating,
 ####Guiding Question: Which factors influence the Quality Ratings of Red Wine?
 
 
-
 ##Univariant Plots Section
 
 
@@ -53,42 +57,44 @@ wine$rating <- ordered(wine$rating,
 ###Fixed Acidity
 
 
+
+```{r}
 qplot(fixed.acidity, data = wine, binwidth = 0.2) +
   ggtitle('Fixed Acidity') +
   ylab('Count')
 
-summary(wine$fixed.acidity)
+
+```
+
+
 
 
 ####We can see that the fixed acidity graph is skewed to the right. The mean is 8.32 and the median is 7.9. 
 
 
 
+```{r}
+summary(wine$fixed.acidity)
 
-###Volatile Acidity
-
-
-qplot(volatile.acidity, data = wine) +
-  ggtitle('Volatile Acidity') +
-  ylab('Count')
-  
-summary(wine$volatile.acidity)
-
-
-####Again, this is skewed to the right. The mean is 0.52 and the median is also found to be 0.52
-
-
+```
 
 
 ###Citric Acid
 
-
+```{r}
 qplot(citric.acid, data = wine) +
   ggtitle('Citric Acid') +
   ylab('Count')
   
 
+```
+
+```{r}
 summary(wine$citric.acid)  
+
+```
+
+
 
 
 ####Unlike Volatile acidity and Fixed acidity, this graph is clearly a bimodal graph. The mean is 2.71 and the median is found to be 0.26
@@ -98,12 +104,19 @@ summary(wine$citric.acid)
 
 ###Residual Sugar
 
-
+```{r}
 qplot(residual.sugar, data = wine) +
   ggtitle('Residual Sugar') +
   ylab('Count')
 
+```
+```{r}
 summary(wine$residual.sugar)
+
+```
+
+
+
 
 
 ####Similar to Fixed acidity and Volatile acidity this graph is also skewed to the right. The mean is 2.53 and median is found to be 2.20
@@ -112,11 +125,20 @@ summary(wine$residual.sugar)
 ###Chlorides
 
 
+```{r}
 qplot(chlorides, data = wine) +
   ggtitle('Chlorides') +
   ylab('Count')
 
+
+
+```
+
+
+```{r}
 summary(wine$chlorides)
+
+```
 
 
 ####This graph is normally distributed. The mean is found to be 0.087 and the median is 0.079. 
@@ -128,11 +150,20 @@ summary(wine$chlorides)
 ###Free Sulfur Dioxide
 
 
+```{r}
 qplot(free.sulfur.dioxide, data = wine) +
   ggtitle('Free Sulfur Dioxide') +
-  ylab('Count')  
+  ylab('Count')
 
+```
+
+  
+```{r}
 summary(wine$free.sulfur.dioxide)
+
+```
+
+
 
 
 ####This graph is skewed to the right. The mean is 15.87 and the median is 14.00.
@@ -143,11 +174,20 @@ summary(wine$free.sulfur.dioxide)
 ###Total Sulfur dioxide
 
 
+```{r}
 qplot(total.sulfur.dioxide, data = wine) +
   ggtitle('Total Sulfur Dioxide') +
   ylab('Count')
 
+
+```
+```{r}
 summary(wine$total.sulfur.dioxide)
+
+```
+
+
+
 
 
 ####This graph is skewed to the right. The mean is 46.47 and the median is 38.00 
@@ -158,11 +198,20 @@ summary(wine$total.sulfur.dioxide)
 ###Density  
 
 
+```{r}
 qplot(density, data = wine) +
   ggtitle('Density') +
   ylab('Count')
-  
+
+```
+
+
+```{r}
 summary(wine$density)
+
+```
+  
+
 
 
 ####This graph is normally distributed. The mean is 0.9967 and the median is 0.9968 
@@ -172,11 +221,20 @@ summary(wine$density)
   
 ###pH
 
+```{r}
 qplot(pH, data = wine) +
   ggtitle('pH') +
   ylab('Count')
+
+```
+
+```{r}
+summary(wine$pH) 
+
+```
+
   
-summary(wine$pH)  
+ 
 
 
 ####We can see that this graph is normally distributed. The mean is 3.311 an the median is 3.31
@@ -187,11 +245,20 @@ summary(wine$pH)
 ###Sulphates
 
 
+```{r}
 qplot(sulphates, data = wine) +
   ggtitle('Sulphates') +
   ylab('Count')
+
+```
+
+```{r}
+summary(wine$sulphates) 
+
+```
+
   
-summary(wine$sulphates)  
+ 
 
 
 ####We can see that this graph is positively skewed. The mean is 0.65 and the median is 0.62.
@@ -202,11 +269,20 @@ summary(wine$sulphates)
 ###Alcohol
 
 
+```{r}
 qplot(alcohol, data = wine) +
   ggtitle('Alcohol') +
   ylab('Count')
-  
+
+```
+
+```{r}
 summary(wine$alcohol)  
+
+```
+
+  
+
 
 
 #### The graph is positively skewed. The mean is 10.42 and the median is 10.20.\
@@ -216,11 +292,20 @@ summary(wine$alcohol)
 
 ###Quality
 
+```{r}
 qplot(quality, data = wine) +
   ggtitle('Quality') +
   ylab('Count')
+
+```
+
+
+```{r}
+summary(wine$quality) 
+
+```
   
-summary(wine$quality)  
+ 
 
 
 
@@ -290,7 +375,7 @@ library(dplyr)
 
 
 
-
+```{r}
 ggplot(aes(quality, alcohol), data = wine) +
   geom_jitter(alpha = 0.3, color = "red") +
   stat_summary(fun.y = "mean",
@@ -300,6 +385,10 @@ ggplot(aes(quality, alcohol), data = wine) +
   ggtitle("Quality Ratings Vs Alcohol Content") +
   xlab("Quality Ratings") +
   ylab("Alcohol Content")
+```
+
+
+
 
 
 #####We can note from the above Quality Vs Alcohol Rating that we have an increase in the Quality Ratings of the Wine with the increase in the alcohol content in it. We can observe a few ##outliers as well in the data. For example, the highest alcohol content, near 15 only has a ##rating of just above 5.
@@ -310,7 +399,7 @@ ggplot(aes(quality, alcohol), data = wine) +
 ###Next we will see how the sugar level in the alcohol will determine the Quality Ratings of the Wine.
 
 
-
+```{r}
 ggplot(aes(quality, residual.sugar), data = wine) +
   geom_jitter(alpha = 0.1, color = "red") +
   stat_summary(fun.y = "mean",
@@ -321,6 +410,11 @@ ggplot(aes(quality, residual.sugar), data = wine) +
   ggtitle("Quality Ratings Vs Residual Sugar") +
   xlab("Quality Ratings") +
   ylab("Residual Sugar")
+
+```
+
+
+
   
   
 
@@ -335,6 +429,7 @@ ggplot(aes(quality, residual.sugar), data = wine) +
 
 
 
+```{r}
 ggplot(aes(quality, pH), data = wine) +
   geom_jitter(alpha = 0.1, color = "red") +
   stat_summary(fun.y = "mean",
@@ -345,6 +440,10 @@ ggplot(aes(quality, pH), data = wine) +
   ggtitle("Quality Ratings Vs pH") +
   xlab("Quality Ratings") +
   ylab("pH")
+
+```
+
+
 
 
 
@@ -357,6 +456,7 @@ ggplot(aes(quality, pH), data = wine) +
 
 
 
+```{r}
 ggplot(aes(quality, density), data = wine) +
   geom_jitter(alpha = 0.1, color = "red") +
   stat_summary(fun.y = "mean",
@@ -366,6 +466,10 @@ ggplot(aes(quality, density), data = wine) +
   ggtitle("Quality Ratings Vs Density") +
   xlab("Quality Ratings") +
   ylab("Density")
+
+```
+
+
   
   
   
@@ -373,18 +477,30 @@ ggplot(aes(quality, density), data = wine) +
 #####Hence we can conclude that Lesser the density, better the Wine.
 
 
+```{r}
+
 ggpairs(wine[sample.int(nrow(wine), 100),])
+
+```
+
 
 #####We now see that the alcohol content is an important feature in determining the quality of wine.
 #####Greater the alcohol content better the Wine. We can analyse the relation between the Alcohol content and other important variables.
 
 ####First up, the plot between Fixed Acidity and pH.
 
+
+
+```{r}
 ggplot(data = wine, aes(x = fixed.acidity, y = pH)) +
   geom_point(alpha = 0.3) +
   scale_x_log10(breaks=seq(5,15,1)) +
   xlab("Fixed Acidity in Log Scale") +
   geom_smooth(method="lm")
+
+```
+
+
   
 #####In this plot we can notice a clear negative relation between Fixed Acidity in log scale and pH. But the pH has a negative relation with the Quality Ratings. Hence, better the fixed acidity, better the quality of wine.
 
@@ -394,12 +510,17 @@ ggplot(data = wine, aes(x = fixed.acidity, y = pH)) +
 ####Next is the plot between volatile acidity and the alcohol content. 
   
   
-  
+
+```{r}
 ggplot(data = wine, aes(x = volatile.acidity, y = alcohol)) +
   geom_point(alpha = 0.3) +
   scale_x_log10(breaks=seq(.1,1,.1)) +
   xlab("Volatile Acidity in Log Scale") +
   geom_smooth(method="lm")
+
+```
+  
+
   
   
   
@@ -467,42 +588,73 @@ ggplot(data = wine, aes(x = volatile.acidity, y = alcohol)) +
 #####Now we will investige the quality ratings of wine and how the other factors affect it taking more than two variables into consideration. 
 
 #####The first plot is with Factors we saw affecting the quality ratings signifantly namely alcohol content and pH value.
-  
+
+
+```{r}
 ggplot(aes(alcohol, pH, color = rating), data = wine)+
 geom_boxplot() +
 xlab("Alcohol") +
 ylab("pH") 
 
+```
+  
+
+
 #####It is reassuring to see that our previous conclusion has been proved true here. The pH does indeed have a negative relation with the Quality ratings. We can also notice from the box plot that the third quadrant of the three ratings are also in the same order specified.
+
+
+```{r}
 
 ggplot(aes(sulphates, alcohol, color = quality), data = wine)+
 geom_point() +
 xlab("Sulphates") +
 ylab("Alcohol Content") 
 
+```
+
+
+
 #####It looks like the quality of wines increases with the increase in alcohol content and more sulphate content.
 
+
+```{r}
 ggplot(aes(alcohol,chlorides, color = quality), data = wine)+
 geom_point(alpha = 0.3) +
 facet_wrap(~rating) +
 xlab("Alcohol Content") +
 ylab("Chlorides") 
 
+```
+
+
+
 #####It is clear that there is a big chunk of data between 0 and 0.2. There are a few outliers in this data as well. Lesser Chlorides and more alcohol content seem to increase the quality of the wine.
 
+
+```{r}
 ggplot(aes(alcohol,density, color = quality), data = wine)+
 geom_point(alpha = 0.3) +
 facet_wrap(~rating) +
 xlab("Alcohol Content") +
 ylab("Density") 
 
+```
+
+
+
 #####Again, as seen before we get to confirm that the density indeed has a negative relation with quality ratings. The lesser the number the better the ratings.
 
+
+```{r}
 ggplot(aes(alcohol,volatile.acidity, color = quality), data = wine)+
 geom_point(alpha = 0.3) +
 facet_wrap(~rating) +
 xlab("Alcohol Content") +
 ylab("Volatile Acidity") 
+
+
+```
+
 
 #####We attain a similar plot to that of the Density plot. There is a negative correlation between Volatile acidity and the quality rating with the alcohol content increasing.
 
@@ -521,6 +673,8 @@ ylab("Volatile Acidity")
 
 #####The first one is a scatter plot between Alcohol Content and Density. I have include sequential in scale color brewer to have a progressive effect rather than the diverging or qualitative colors. 
 
+
+```{r}
 ggplot(data = wine,
        aes(x = alcohol, y = density,
            color = quality)) +
@@ -530,9 +684,15 @@ ggplot(data = wine,
   geom_smooth(method = "lm", se = FALSE,size=1)  +
   scale_color_brewer(type='seq',
                    guide=guide_legend(title='Quality'))
+
+```
+
+
                    
 #####The second plot is between citric acid and volatile acidity. Even in this graph I have used sequential scale color brewer to give progressive effection for the lines in the graph.            
 
+
+```{r}
 
 ggplot(data = wine,
        aes(y = citric.acid, x = volatile.acidity,
@@ -542,6 +702,9 @@ ggplot(data = wine,
   facet_wrap(~rating) +
   scale_color_brewer(type='seq',
                    guide=guide_legend(title='Quality'))
+
+
+```
 
 
 
@@ -566,6 +729,7 @@ ggplot(data = wine,
 ####Plot 1
 
 
+```{r}
 ggplot(data=wine, aes(x=quality, y=pH )) + 
   geom_jitter(alpha = .3)  +
   geom_boxplot(alpha = .5,color = 'blue') +
@@ -575,6 +739,10 @@ ggplot(data=wine, aes(x=quality, y=pH )) +
                size = 3) +
   xlab("Quality") +
   ggtitle("Influence of pH on wine quality")
+
+```
+
+
 
 
 
@@ -589,6 +757,7 @@ ggplot(data=wine, aes(x=quality, y=pH )) +
 
 
 
+```{r}
 ggplot(data = wine, aes( x = alcohol, y = sulphates,
       color = quality)) +
   geom_point(alpha = 0.8, size = 1) +
@@ -599,6 +768,10 @@ ggplot(data = wine, aes( x = alcohol, y = sulphates,
   scale_color_brewer(type='seq',
                    guide=guide_legend(title='Quality')) +
   ggtitle("Alcohol and sulphates over wine quality")
+
+```
+
+
   
   
   
@@ -611,12 +784,18 @@ ggplot(data = wine, aes( x = alcohol, y = sulphates,
 
 ####Plot 3
 
+
+```{r}
  ggplot(data = wine, aes(x = volatile.acidity, y = density, color = rating)) +
  geom_point(alpha = 0.3) + 
   geom_smooth(method = "lm", se = FALSE,size=1) +
  xlab("Volatile Acidity") +
  ylab("Density") +
  ggtitle("Volatile Acidity Vs Density Over Wine Quality")
+
+```
+
+
 
 
 ####Description three.
