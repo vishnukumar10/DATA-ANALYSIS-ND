@@ -1,95 +1,104 @@
 ---
-output: html_document
+output: 
+  html_document: 
+  
 editor_options: 
-  chunk_output_type: console
+  
+chunk_output_type: inline
 ---
 #RedWine Dataset Exploratory Data Analysis
 
-####The main motto of this report is to explore and find out the factors which influence the quality ratings of Wine. This in turn can help the company which produces wine, to improve the qualities on which it can work on to give a better quality product. 
-####This is going to be done with 1599 entries and 12 Factors which might have an influence on the Quality Ratings.
+The main motto of this report is to explore and find out the factors which influence the quality ratings of Wine. This in turn can help the company which produces wine, to improve the qualities on which it can work on to give a better quality product. 
 
+This is going to be done with 1599 entries and 12 Factors which might have an influence on the Quality Ratings.
+
+
+
+```{r ,  echo = FALSE, warning=FALSE, message=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
 library(ggplot2)
-
 library(GGally)
-
 library(grid)
-
 library(gridExtra)
-
 library(knitr)
-
 library(rmarkdown)
-
+library(dplyr)
 
 wine <- read.csv('wineQualityReds.csv')
-
-
+wine = subset(wine , select = -X)
 head(wine)
 
+``` 
 
 
-#####Transforming Quality from an Integer to a Factor
+
+
+Transforming Quality from an Integer to a Factor
+```{r, warning=FALSE}
 wine$quality <- factor(wine$quality, ordered = T)
+```
 
 
+Creating a new Factored Variable called 'Rating'
 
-#####Creating a new Factored Variable called 'Rating'
-
+```{r, warning=FALSE}
 wine$rating <- ifelse(wine$quality < 5, 'bad', ifelse(
   wine$quality < 7, 'average', 'good'))
+```
 
-
+```{r, warning=FALSE}
 wine$rating <- ordered(wine$rating,
                        levels = c('bad', 'average', 'good'))
+```
 
 
+**Guiding Question: Which factors influence the Quality Ratings of Red Wine?**
 
-####Guiding Question: Which factors influence the Quality Ratings of Red Wine?
-
+We need to check that. 
 
 ##Univariant Plots Section
 
 
 
-####Our data set consists of 13 Variables with almost 1600 entries.
+Our data set consists of 13 Variables with almost 1600 entries.
+
+**Fixed Acidity**
 
 
-###Fixed Acidity
+```{r, warning=FALSE}
 
-
-
-```{r}
 qplot(fixed.acidity, data = wine, binwidth = 0.2) +
   ggtitle('Fixed Acidity') +
-  ylab('Count')
-
+  xlab('Fixed Acidity') +
+  ylab('Count') 
 
 ```
 
 
 
-
-####We can see that the fixed acidity graph is skewed to the right. The mean is 8.32 and the median is 7.9. 
-
-
-
-```{r}
+```{r, warning=FALSE}
 summary(wine$fixed.acidity)
 
 ```
 
 
-###Citric Acid
 
-```{r}
+We can see that the fixed acidity graph is skewed to the right. The mean is 8.32 and the median is 7.9. 
+
+
+
+**Citric Acid**
+
+```{r, warning=FALSE, message=FALSE}
 qplot(citric.acid, data = wine) +
   ggtitle('Citric Acid') +
+  xlab('Citric Acid') +
   ylab('Count')
   
 
 ```
 
-```{r}
+```{r, warning=FALSE}
 summary(wine$citric.acid)  
 
 ```
@@ -97,35 +106,50 @@ summary(wine$citric.acid)
 
 
 
-####Unlike Volatile acidity and Fixed acidity, this graph is clearly a bimodal graph. The mean is 2.71 and the median is found to be 0.26
+Unlike Volatile acidity and Fixed acidity, this graph is clearly a bimodal graph. The mean is 2.71 and the median is found to be 0.26
 
 
 
 
-###Residual Sugar
+**Residual Sugar**
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 qplot(residual.sugar, data = wine) +
   ggtitle('Residual Sugar') +
+  xlab('Residual Sugar') +
   ylab('Count')
 
 ```
-```{r}
+```{r, warning=FALSE}
 summary(wine$residual.sugar)
 
 ```
 
+**Volatile Acidity**
+
+```{r, warning=FALSE, message=FALSE}
+qplot(volatile.acidity, data = wine) +
+  ggtitle('Volatile Acidity') +
+  xlab('Volatile Acidity') +
+  ylab('Count')
+
+```
+```{r, warning=FALSE}
+summary(wine$volatile.acidity)
+
+```
 
 
 
 
-####Similar to Fixed acidity and Volatile acidity this graph is also skewed to the right. The mean is 2.53 and median is found to be 2.20
+
+Similar to Fixed acidity and Volatile acidity this graph is also skewed to the right. The mean is 2.53 and median is found to be 2.20
 
 
-###Chlorides
+**Chlorides**
 
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 qplot(chlorides, data = wine) +
   ggtitle('Chlorides') +
   ylab('Count')
@@ -135,30 +159,31 @@ qplot(chlorides, data = wine) +
 ```
 
 
-```{r}
+```{r, warning=FALSE}
 summary(wine$chlorides)
 
 ```
 
 
-####This graph is normally distributed. The mean is found to be 0.087 and the median is 0.079. 
+This graph is normally distributed. The mean is found to be 0.087 and the median is 0.079. 
 
 
 
 
 
-###Free Sulfur Dioxide
+**Free Sulfur Dioxide**
 
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 qplot(free.sulfur.dioxide, data = wine) +
   ggtitle('Free Sulfur Dioxide') +
+  xlab('Free Sulfur Dioxide') +
   ylab('Count')
 
 ```
 
   
-```{r}
+```{r, warning=FALSE}
 summary(wine$free.sulfur.dioxide)
 
 ```
@@ -166,22 +191,23 @@ summary(wine$free.sulfur.dioxide)
 
 
 
-####This graph is skewed to the right. The mean is 15.87 and the median is 14.00.
+This graph is skewed to the right. The mean is 15.87 and the median is 14.00.
 
 
 
 
-###Total Sulfur dioxide
+**Total Sulfur dioxide**
 
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 qplot(total.sulfur.dioxide, data = wine) +
   ggtitle('Total Sulfur Dioxide') +
+  xlab('Total Sulfur Dioxide') +
   ylab('Count')
 
 
 ```
-```{r}
+```{r, warning=FALSE}
 summary(wine$total.sulfur.dioxide)
 
 ```
@@ -190,23 +216,24 @@ summary(wine$total.sulfur.dioxide)
 
 
 
-####This graph is skewed to the right. The mean is 46.47 and the median is 38.00 
+This graph is skewed to the right. The mean is 46.47 and the median is 38.00 
 
 
 
 
-###Density  
+**Density**  
 
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 qplot(density, data = wine) +
   ggtitle('Density') +
+  xlab('Density') +
   ylab('Count')
 
 ```
 
 
-```{r}
+```{r, warning=FALSE}
 summary(wine$density)
 
 ```
@@ -214,21 +241,21 @@ summary(wine$density)
 
 
 
-####This graph is normally distributed. The mean is 0.9967 and the median is 0.9968 
+This graph is normally distributed. The mean is 0.9967 and the median is 0.9968 
 
 
 
   
-###pH
+**pH**
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 qplot(pH, data = wine) +
   ggtitle('pH') +
   ylab('Count')
 
 ```
 
-```{r}
+```{r, warning=FALSE}
 summary(wine$pH) 
 
 ```
@@ -237,22 +264,23 @@ summary(wine$pH)
  
 
 
-####We can see that this graph is normally distributed. The mean is 3.311 an the median is 3.31
+We can see that this graph is normally distributed. The mean is 3.311 an the median is 3.31
 
 
 
 
-###Sulphates
+**Sulphates**
 
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 qplot(sulphates, data = wine) +
   ggtitle('Sulphates') +
+  xlab('Sulphates') +
   ylab('Count')
 
 ```
 
-```{r}
+```{r, warning=FALSE}
 summary(wine$sulphates) 
 
 ```
@@ -261,22 +289,21 @@ summary(wine$sulphates)
  
 
 
-####We can see that this graph is positively skewed. The mean is 0.65 and the median is 0.62.
+We can see that this graph is positively skewed. The mean is 0.65 and the median is 0.62.
 
 
 
+**Alcohol**
 
-###Alcohol
 
-
-```{r}
+```{r, warning=FALSE, message=FALSE}
 qplot(alcohol, data = wine) +
   ggtitle('Alcohol') +
   ylab('Count')
 
 ```
 
-```{r}
+```{r, warning=FALSE}
 summary(wine$alcohol)  
 
 ```
@@ -285,14 +312,14 @@ summary(wine$alcohol)
 
 
 
-#### The graph is positively skewed. The mean is 10.42 and the median is 10.20.\
+The graph is positively skewed. The mean is 10.42 and the median is 10.20.
 
 
 
 
-###Quality
+**Quality**
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 qplot(quality, data = wine) +
   ggtitle('Quality') +
   ylab('Count')
@@ -303,79 +330,95 @@ qplot(quality, data = wine) +
 ```{r}
 summary(wine$quality) 
 
+
+
+```
+
+**Quality Rating**
+
+```{r, warning=FALSE, message=FALSE}
+qplot(rating, data = wine) +
+  ggtitle('Ratings') +
+  xlab('Ratings') +
+  ylab('Count')
+
+```
+
+
+```{r}
+summary(wine$quality) 
+
+
+
 ```
   
  
 
 
 
-####We can see that there are 6 individual values in the graph. With most number of observations having a quality rating of 5.
+We can see that there are 6 individual values in the graph. With most number of observations having a quality rating of 5.
 
 
 ##Univariant Analysis Section:
 
 
-###What is the structure of the dataset?
+**What is the structure of the dataset?**
 
-#####There are about 1600 observations made about red wines and the factors which have been taken into consideration include alcohol content, pH, residual sugars, volatile acidity, fixed acidity, free sulfurdioxide, total sulfur dioxide, density, sulphates, chlorides, citric acid. And the main factor which will be focused on Quality Ratings and how it relateds to the other variables when directly plotted with them.
+There are about 1600 observations made about red wines and the factors which have been taken into consideration include alcohol content, pH, residual sugars, volatile acidity, fixed acidity, free sulfurdioxide, total sulfur dioxide, density, sulphates, chlorides, citric acid. And the main factor which will be focused on Quality Ratings and how it relates to the other variables when directly plotted with them.
 
-####The other observations made are as follows:
+The other observations made are as follows:
 
-#####1) The Quality ratings made, range from 3 to 8 with a mean value of 5.36
+1) The Quality ratings made, range from 3 to 8 with a mean value of 5.36
 
-#####2)Most of the pH ratings lie between 2.5 to 3.75 with a maximum value of 4.01
+2) Most of the pH ratings lie between 2.5 to 3.75 with a maximum value of 4.01
 
-#####3)The alcohol content has a minimum value of 8.40 and a maximum value of 14.90 with the median at 10.20
+3) The alcohol content has a minimum value of 8.40 and a maximum value of 14.90 with the median at 10.20
 
-#####4)Positively Skewed Plots: Fixed acidity, Citric acid, Free sulfur dioxide, Total sulfur dioxide, Sulphates, Alcohol.
-
-
-
-
-#
-#
-#
-#
-#
-#
-
-###What are the main features of interest in the dataset?
+4) Positively Skewed Plots: Fixed acidity, Citric acid, Free sulfur dioxide, Total sulfur dioxide, Sulphates, Alcohol.
 
 
 
-#####The main features of the dataset is Quality ratings. The Features which might have an influence on the Quality ratings are the alcohol content, pH, density, sugar content and Chorides. If we plot them directly against Quality ratings we can know the relation for sure.  
+
+
+**What are the main features of interest in the dataset?**
 
 
 
-###Any new variables created?
+The main features of the dataset is Quality ratings. The Features which might have an influence on the Quality ratings are the alcohol content, pH, density, sugar content and Chorides. If we plot them directly against Quality ratings we can know the relation for sure.  
 
 
-#####A new variable, rating, has been created. It helps in grouping the Quality rating into three categories of bad, average and good.
-#####I feel this will make it easier to conclude the quality of wine just on looking at the rating, rather than looking at numbers and deciding. 
+
+**Any new variables created?**
 
 
-###Were there any outliers in the dataset? If so, how?
+A new variable, rating, has been created. It helps in grouping the Quality rating into three categories of bad, average and good.
+
+I feel this will make it easier to conclude the quality of wine just on looking at the rating, rather than looking at numbers and deciding. 
 
 
-#####In Residual sugars, we see that there is a lot of inconsistency in the data. The residual sugar content in the graph as we go from left to right. Why is this so? It might be because the wine made usually contains only a particular amount of residual sugar and the values from around 8 are outliers.
-#####This is the same case with other variables such as Sulphates, Chlorides and Total Sulfur dioxide.
-#####It is very clear that many observations have the Citric Acid content as zero. This maybe due to citric acid data entry could have been either missed or omitted or actual value being zero.
+**Were there any outliers in the dataset? If so, how?**
+
+
+In Residual sugars, we see that there is a lot of inconsistency in the data. The residual sugar content in the graph as we go from left to right. Why is this so? What might be the factors which cause this inconsistency? It might be because the wine made usually contains only a particular amount of residual sugar and the values from around 8 are outliers.
+
+This is the same case with other variables such as Sulphates, Chlorides and Total Sulfur dioxide.
+
+It is very clear that many observations have the Citric Acid content as zero. This maybe due to citric acid data entry could have been either missed or omitted or actual value being zero.
 
 
 
 ## Bivariant Plots Section
 
 
-library(dplyr)
 
-#####The Quality Ratings will be compared to different variables since it is the Ratings which determine if the Wine is good or not. If the wine is likable or not. This can be used by the production company to implement and improve their standards.
+The Quality Ratings will be compared to different variables since it is the Ratings which determine if the Wine is good or not. If the wine is likable or not. This can be used by the production company to implement and improve their standards.
 
-####First up, we compare one of the most important features which might determine the Ratings of theWine. The Alcohol Content. So we plot a scatter plot as follows.
-
+First up, we compare one of the most important features which might determine the Ratings of the Wine. The Alcohol Content. So we plot a scatter plot as follows.
 
 
 
-```{r}
+
+```{r, warning=FALSE, message=FALSE}
 ggplot(aes(quality, alcohol), data = wine) +
   geom_jitter(alpha = 0.3, color = "red") +
   stat_summary(fun.y = "mean",
@@ -391,15 +434,15 @@ ggplot(aes(quality, alcohol), data = wine) +
 
 
 
-#####We can note from the above Quality Vs Alcohol Rating that we have an increase in the Quality Ratings of the Wine with the increase in the alcohol content in it. We can observe a few ##outliers as well in the data. For example, the highest alcohol content, near 15 only has a ##rating of just above 5.
+We can note from the above Quality Vs Alcohol Rating that we have an increase in the Quality Ratings of the Wine with the increase in the alcohol content in it. We can observe a few ##outliers as well in the data. For example, the highest alcohol content, near 15 only has a rating of just above 5.
 
 
 
 
-###Next we will see how the sugar level in the alcohol will determine the Quality Ratings of the Wine.
+Next we will see how the sugar level in the alcohol will determine the Quality Ratings of the Wine.
 
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 ggplot(aes(quality, residual.sugar), data = wine) +
   geom_jitter(alpha = 0.1, color = "red") +
   stat_summary(fun.y = "mean",
@@ -418,45 +461,41 @@ ggplot(aes(quality, residual.sugar), data = wine) +
   
   
 
-#####Surprisingly the Sugar Content remains constant through all the Quality Rating,
+Surprisingly the Sugar Content remains constant through all the Quality Rating,
 
-#####This can be infered as Sugar Content not having an influence on the Quality Ratings.
-
-
-
-
-####Next we will see how the pH influences the Quality Ratings.
+This can be infered as Sugar Content not having an influence on the Quality Ratings.
 
 
 
-```{r}
-ggplot(aes(quality, pH), data = wine) +
-  geom_jitter(alpha = 0.1, color = "red") +
-  stat_summary(fun.y = "mean",
-               geom = "point",
-               color = "black",
+Next plot is between Quality and pH Content.
+
+```{r, warning=FALSE, message=FALSE}
+ggplot(data=wine, aes(x=quality, y=pH )) + 
+  geom_jitter(alpha = .3)  +
+  geom_boxplot(alpha = .5,color = 'blue') +
+  stat_summary(fun.y = "mean", 
+               geom = "point", 
+               color = "red", 
                size = 3) +
-  scale_y_continuous(lim = c(3,4)) +
-  ggtitle("Quality Ratings Vs pH") +
-  xlab("Quality Ratings") +
-  ylab("pH")
+  xlab("Quality") +
+  ggtitle("Influence of pH on wine quality")
 
 ```
 
 
 
 
-
-#####The plot has been cut to between 3 and 4 to see the details of it. We can see that the pH decreases slightly with the increase in Quality Ratings. We can conclude that better Wines have lesser pH.
-
+As we see the plot, we can observe the there is a slight drop in pH as the quality increases. Also, we find that the median of the box plots coincides with the mean produced with the help of stat summary.
 
 
 
-####Plot between Density and The Quality Ratings
+
+
+Plot between Density and The Quality Ratings
 
 
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 ggplot(aes(quality, density), data = wine) +
   geom_jitter(alpha = 0.1, color = "red") +
   stat_summary(fun.y = "mean",
@@ -473,25 +512,17 @@ ggplot(aes(quality, density), data = wine) +
   
   
   
-#####We can see that the Quality Ratings are increasing with the decrease in Density. 
-#####Hence we can conclude that Lesser the density, better the Wine.
+We can see that the Quality Ratings are increasing with the decrease in Density. 
 
-
-```{r}
-
-ggpairs(wine[sample.int(nrow(wine), 100),])
-
-```
-
-
-#####We now see that the alcohol content is an important feature in determining the quality of wine.
-#####Greater the alcohol content better the Wine. We can analyse the relation between the Alcohol content and other important variables.
-
-####First up, the plot between Fixed Acidity and pH.
+Hence we can conclude that Lesser the density, better the Wine.
 
 
 
-```{r}
+Plot between Fixed Acidity and pH.
+
+
+
+```{r, warning=FALSE, message=FALSE}
 ggplot(data = wine, aes(x = fixed.acidity, y = pH)) +
   geom_point(alpha = 0.3) +
   scale_x_log10(breaks=seq(5,15,1)) +
@@ -502,16 +533,16 @@ ggplot(data = wine, aes(x = fixed.acidity, y = pH)) +
 
 
   
-#####In this plot we can notice a clear negative relation between Fixed Acidity in log scale and pH. But the pH has a negative relation with the Quality Ratings. Hence, better the fixed acidity, better the quality of wine.
+In this plot we can notice a clear negative relation between Fixed Acidity in log scale and pH. But the pH has a negative relation with the Quality Ratings. Hence, better the fixed acidity, better the quality of wine.
 
 
 
 
-####Next is the plot between volatile acidity and the alcohol content. 
+Next is the plot between volatile acidity and the alcohol content. 
   
   
 
-```{r}
+```{r, warning=FALSE}
 ggplot(data = wine, aes(x = volatile.acidity, y = alcohol)) +
   geom_point(alpha = 0.3) +
   scale_x_log10(breaks=seq(.1,1,.1)) +
@@ -525,7 +556,7 @@ ggplot(data = wine, aes(x = volatile.acidity, y = alcohol)) +
   
   
   
-####We can observe a downward trend. But it is not as clear as the plot obtained for Fixed Acidity Vs pH. Since alcohol has a positive relation with the Quality ratings. Hence the Volatile acid on a log scale has a negative relation with Quality Ratings.
+We can observe a downward trend. But it is not as clear as the plot obtained for Fixed Acidity Vs pH. Since alcohol has a positive relation with the Quality ratings. Hence the Volatile acid on a log scale has a negative relation with Quality Ratings.
 
 
 
@@ -534,48 +565,47 @@ ggplot(data = wine, aes(x = volatile.acidity, y = alcohol)) +
 
 
 
-###What were the relationships observed in the analysis of a variable and how it affects the Quality Analysis?
+**What were the relationships observed in the analysis of a variable and how it affects the Quality Analysis?**
 
 
 
-####I have plotted four variables against the Quality Ratings. They are as follows.
+I have plotted four variables against the Quality Ratings. They are as follows.
 
 
 
-#####1) The first one is Quality Ratings Vs Alcohol Content. We can clearly observe a positive relation between Quality ratings and Alcohol Content, that there is an increase in Quality Ratings as there is an increase in the Alcohol content. 
+1) The first one is Quality Ratings Vs Alcohol Content. We can clearly observe a positive relation between Quality ratings and Alcohol Content, that there is an increase in Quality Ratings as there is an increase in the Alcohol content. 
 
 
 
-#####2) The Second Graph is between Quality Ratings and Residual Sugars. Surprisingly, there is no change in the mean sugar level even with the increase in quality ratings. So the conclusion is that the Quality ratings of the wine do no depend on the Sugar content in the wine. 
+2) The Second Graph is between Quality Ratings and Residual Sugars. Surprisingly, there is no change in the mean sugar level even with the increase in quality ratings. So the conclusion is that the Quality ratings of the wine do no depend on the Sugar content in the wine. 
 
-#####3) The Third Graph is between Quality Ratings and pH. In this case, we can see a slight decrease in pH level as the Quality Ratings increase. Hence we can conclude that the decrease in pH can result in better quality of wine produced.
+3) The Third Graph is between Quality Ratings and pH. In this case, we can see a slight decrease in pH level as the Quality Ratings increase. Hence we can conclude that the decrease in pH can result in better quality of wine produced.
 
-#####4)The Fourth Graph is between Quality Ratings and Density. Similar to pH, there is a downward trend in density as the Quality Ratings increase. 
-
-
-
-
-####What were the other relationship observed other than the main feature of interest That is the Quality Analysis?
+4) The Fourth Graph is between Quality Ratings and Density. Similar to pH, there is a downward trend in density as the Quality Ratings increase. 
 
 
 
 
-#####There were two other relations made and conclusions were drawn from the graphs that were plotted
-
-
-#####1) The first graph plotted was between Fixed Acidity on log scale and pH. This graph showed a clear negative relationship between Fixed Acidity and pH. That is, with the increase in pH there was a decrease in Fixed Acidity. 
-
-
-####2) The second graph plotted was between Volatility Acid and Alcohol content. This graph does not have a representation as clear as the Fixed Acidity and pH graph. But we can observe that here too there is a negative relation between Volatility acid and alcohol content. This in turn also tell that there is negative relation between Volatility acid and the Quality of wine that is produced.
+**What were the other relationship observed other than the main feature of interest That is the Quality Analysis?**
 
 
 
 
-####Where there any unexpected anomalies in the relations obtained?
+There were two other relations made and conclusions were drawn from the graphs that were plotted
+
+
+1) The first graph plotted was between Fixed Acidity on log scale and pH. This graph showed a clear negative relationship between Fixed Acidity and pH. That is, with the increase in pH there was a decrease in Fixed Acidity. 
+
+
+2) The second graph plotted was between Volatility Acid and Alcohol content. This graph does not have a representation as clear as the Fixed Acidity and pH graph. But we can observe that here too there is a negative relation between Volatility acid and alcohol content. This in turn also tells us that there is negative relation between Volatility acid and the Quality of wine that is produced.
 
 
 
-#####I was surprised to see no relationship between the amount of sugars, ie) Residual sugars and the Quality ratings. There was an expectation to see a relationship but there wasn't one. 
+**Where there any unexpected anomalies in the relations obtained?**
+
+
+
+I was surprised to see no relationship between the amount of sugars, ie) Residual sugars and the Quality ratings. There was an expectation to see a relationship but there wasn't one. 
   
 
 
@@ -585,78 +615,88 @@ ggplot(data = wine, aes(x = volatile.acidity, y = alcohol)) +
 
 
 
-#####Now we will investige the quality ratings of wine and how the other factors affect it taking more than two variables into consideration. 
+Now we will investige the quality ratings of wine and how the other factors affect it taking more than two variables into consideration. 
 
-#####The first plot is with Factors we saw affecting the quality ratings signifantly namely alcohol content and pH value.
+The first plot is with Factors we saw affecting the quality ratings signifantly namely alcohol content and pH value.
 
 
-```{r}
-ggplot(aes(alcohol, pH, color = rating), data = wine)+
-geom_boxplot() +
+```{r, warning=FALSE, message=FALSE}
+ggplot(aes(alcohol, pH, color = quality), data = wine)+
+geom_jitter() +
 xlab("Alcohol") +
-ylab("pH") 
+ylab("pH") +
+  scale_color_brewer(type = 'seq', palette = 1) +
+  ggtitle("Alcohol Vs pH over Quality Ratings")
 
 ```
   
 
 
-#####It is reassuring to see that our previous conclusion has been proved true here. The pH does indeed have a negative relation with the Quality ratings. We can also notice from the box plot that the third quadrant of the three ratings are also in the same order specified.
+It is reassuring to see that our previous conclusion has been proved true here. The alcohol does indeed have a positive relation with the Quality ratings. There are more dark blue points to the right of the graph than to the left. 
 
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 
 ggplot(aes(sulphates, alcohol, color = quality), data = wine)+
 geom_point() +
 xlab("Sulphates") +
-ylab("Alcohol Content") 
+ylab("Alcohol Content") +
+  scale_color_brewer(type='seq',
+                   guide=guide_legend(title='Rating')) +
+  ggtitle("Sulphates Vs Alcohol Content over Quality Ratings")
 
 ```
 
 
 
-#####It looks like the quality of wines increases with the increase in alcohol content and more sulphate content.
+It looks like the quality of wines increases with the increase in alcohol content and more sulphate content.
 
 
-```{r}
+```{r, warning=FALSE}
 ggplot(aes(alcohol,chlorides, color = quality), data = wine)+
 geom_point(alpha = 0.3) +
 facet_wrap(~rating) +
 xlab("Alcohol Content") +
-ylab("Chlorides") 
+ylab("Chlorides") +
+  ggtitle("Alcohol Content Vs Chlorides over Quality Ratings")
+ 
 
 ```
 
 
 
-#####It is clear that there is a big chunk of data between 0 and 0.2. There are a few outliers in this data as well. Lesser Chlorides and more alcohol content seem to increase the quality of the wine.
+It is clear that there is a big chunk of data between 0 and 0.2. There are a few outliers in this data as well. Lesser Chlorides and more alcohol content seem to increase the quality of the wine.
 
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 ggplot(aes(alcohol,density, color = quality), data = wine)+
 geom_point(alpha = 0.3) +
 facet_wrap(~rating) +
 xlab("Alcohol Content") +
-ylab("Density") 
+ylab("Density") +
+  ggtitle("Alcohol Content Vs Density over Quality Ratings")
+ 
 
 ```
 
 
 
-#####Again, as seen before we get to confirm that the density indeed has a negative relation with quality ratings. The lesser the number the better the ratings.
+Again, as seen before we get to confirm that the density indeed has a negative relation with quality ratings. The lesser the number the better the ratings.
 
 
-```{r}
-ggplot(aes(alcohol,volatile.acidity, color = quality), data = wine)+
-geom_point(alpha = 0.3) +
-facet_wrap(~rating) +
-xlab("Alcohol Content") +
-ylab("Volatile Acidity") 
-
+```{r, warning=FALSE, message=FALSE}
+ ggplot(data = wine, aes(x = volatile.acidity, y = density, color = rating)) +
+ geom_point(alpha = 0.3) + 
+  geom_smooth(method = "lm", se = FALSE,size=1) +
+ xlab("Volatile Acidity") +
+ ylab("Density") +
+ ggtitle("Volatile Acidity Vs Density Over Wine Quality")
 
 ```
 
 
-#####We attain a similar plot to that of the Density plot. There is a negative correlation between Volatile acidity and the quality rating with the alcohol content increasing.
+
+Two of the common factors that have been discussed are Volatility acid and Density. Rating is taken instead of quality to make the plot more easily understandable, with only three colors. We can see that there is a chunk of yellow near 0.995 in the density but this gradually decreases as we go up. We can see that there is a slight downward slope, similar to the one we saw in plot 2.
 
 
 
@@ -665,16 +705,16 @@ ylab("Volatile Acidity")
 
 
 
-####Linear Model:
+**Linear Model:**
 
 
 
-####Below I have created two linear model graphs. 
+Below I have created two linear model graphs. 
 
-#####The first one is a scatter plot between Alcohol Content and Density. I have include sequential in scale color brewer to have a progressive effect rather than the diverging or qualitative colors. 
+The first one is a scatter plot between Alcohol Content and Density. I have include sequential in scale color brewer to have a progressive effect rather than the diverging or qualitative colors. 
 
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 ggplot(data = wine,
        aes(x = alcohol, y = density,
            color = quality)) +
@@ -689,10 +729,10 @@ ggplot(data = wine,
 
 
                    
-#####The second plot is between citric acid and volatile acidity. Even in this graph I have used sequential scale color brewer to give progressive effection for the lines in the graph.            
+The second plot is between citric acid and volatile acidity. Even in this graph I have used sequential scale color brewer to give progressive effection for the lines in the graph.            
 
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 
 ggplot(data = wine,
        aes(y = citric.acid, x = volatile.acidity,
@@ -710,13 +750,17 @@ ggplot(data = wine,
 
 ##Multivariant Analysis Section
 
-####What were the observations made from the Multivariant graphs plotted?
+**What were the observations made from the Multivariant graphs plotted?**
 
-#####Low pH and Density And high Alcohol content and Sulphate content seem to produce better wines.
+Low pH, Density and Sulphate content seem to produce better wines. And  as noted before better Alcohol content produced better wine.
 
 
-#####The citric acid content and volatile acid content seem to have a negative correlation. There is a lot of zero values in citric acid data but there is a chance that citric acid might not have been added in the wine.
+The citric acid content and volatile acid content seem to have a negative correlation. There is a lot of zero values in citric acid data but there is a chance that citric acid might not have been added in the wine.
 
+
+**Where there any interesting or surprising interations between features?**
+
+It was interesting to note that Lesser Chloride content produces better Wine Quality Ratings. There were quite a few number of outliers as well in chlorides. We can see a small chunk of points near 0.4 . Now this is interesting as we see many points in the average graph, maybe that is the reason for outliers. Maybe even more quality ratings falling in the good and bad quality ratings graph could have deviated from the 0.0 to 0.2 range. Now we see only a handful points. Maybe the number will increase with more ratings. 
 
 
 
@@ -726,10 +770,10 @@ ggplot(data = wine,
 
 
 
-####Plot 1
+###Plot 1:
 
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 ggplot(data=wine, aes(x=quality, y=pH )) + 
   geom_jitter(alpha = .3)  +
   geom_boxplot(alpha = .5,color = 'blue') +
@@ -737,7 +781,7 @@ ggplot(data=wine, aes(x=quality, y=pH )) +
                geom = "point", 
                color = "red", 
                size = 3) +
-  xlab("Quality") +
+  xlab("Quality (Between 0 and 10)") +
   ggtitle("Influence of pH on wine quality")
 
 ```
@@ -746,28 +790,29 @@ ggplot(data=wine, aes(x=quality, y=pH )) +
 
 
 
-####Description one
+####Description one:
 
 
 
-#####I found that pH plays a major role in determining the quality of wine, so I plotted the above. As we see the plot, we can observe the there is a slight drop in pH as the quality increases. Also, we find that the median of the box plots coincides with the mean produced with the help of stat summary.
+I found that pH plays a major role in determining the quality of wine, so I plotted the above. As we see the plot, we can observe the there is a slight drop in pH as the quality increases. Also, we find that the median of the box plots coincides with the mean produced with the help of stat summary.
 
 
-####Plot 2
+###Plot 2:
 
 
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 ggplot(data = wine, aes( x = alcohol, y = sulphates,
       color = quality)) +
   geom_point(alpha = 0.8, size = 1) +
   geom_smooth(method = "lm", se = FALSE,size=1)  +
   scale_y_continuous(limits=c(0.3,1.5)) +
-  xlab("Alcohol Content") +
-  ylab("Sulphate") +
+  xlab("Alcohol Content in (% by volume)") +
+  ylab("Sulphate in (g/ dm^3)") +
   scale_color_brewer(type='seq',
                    guide=guide_legend(title='Quality')) +
-  ggtitle("Alcohol and sulphates over wine quality")
+  ggtitle("Alcohol and sulphates over wine quality") +
+  theme_dark()
 
 ```
 
@@ -776,21 +821,21 @@ ggplot(data = wine, aes( x = alcohol, y = sulphates,
   
   
   
-####Description two
+####Description two:
 
-#####It is now very obvious that the alcohol content and sulphates have a major impact on the quality of the wine. We can observe that the lines are getting darker as we go up the line. This indeed denotes that quality of wine has increased from bottom to top. 
+It is now very obvious that the alcohol content and sulphates have a major impact on the quality of the wine. We can observe that the lines are getting darker as we go up the line. This indeed denotes that quality of wine has increased from bottom to top. 
 
-#####But the lines goes slightly downward. This suggests that the sulphates decrease with the increase in alcohol content. 
+But the lines goes slightly downward. This suggests that the sulphates decrease with the increase in alcohol content. 
 
-####Plot 3
+###Plot 3:
 
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
  ggplot(data = wine, aes(x = volatile.acidity, y = density, color = rating)) +
  geom_point(alpha = 0.3) + 
   geom_smooth(method = "lm", se = FALSE,size=1) +
- xlab("Volatile Acidity") +
- ylab("Density") +
+ xlab("Volatile Acidity in (g / dm^3)") +
+ ylab("Density in (mg/L)") +
  ggtitle("Volatile Acidity Vs Density Over Wine Quality")
 
 ```
@@ -798,46 +843,46 @@ ggplot(data = wine, aes( x = alcohol, y = sulphates,
 
 
 
-####Description three.
+####Description Three:
 
-#####Two of the common factors that have been discussed are Volatility acid and Density. Rating is taken instead of quality to make the plot more easily understandable, with only three colors. We can see that there is a chunk of yellow near 0.995 in the density but this gradually decreases as we go up. We can see that there is a slight downward slope, similar to the one we saw in plot 2.
-
-
+Two of the common factors that have been discussed are Volatility acid and Density. Rating is taken instead of quality to make the plot more easily understandable, with only three colors. We can see that there is a chunk of yellow near 0.995 in the density but this gradually decreases as we go up. We can see that there is a slight downward slope, similar to the one we saw in plot 2. Which makes sense since we saw lesser the pH better the Quality Ratings. This can also be taken as an indirect confirmation to the conclusion we had attained before.
 
 
 
 
 
-##Reflection
+
+
+##Reflection:
 
 
 
 
-#####The Red Wine dataset contained about 1600 observations and 13 variables where given. From the beginning the main question has been to find the factors which influence the quality of the wine and how to improve the quality of wine.
+The Red Wine dataset contained about 1600 observations and 13 variables where given. From the beginning the main question has been to find the factors which influence the quality of the wine and how to improve the quality of wine.
 
 
 
-#####As I started to analyse the data by plotting them, there is a small intuition as to what factors might influence the Quality Ratings. I took four factors that include pH, density, residual sugars and mainly alcohol content. 
+As I started to analyse the data by plotting them, there is a small intuition as to what factors might influence the Quality Ratings. I took four factors that include pH, density, residual sugars and mainly alcohol content. 
 
 
 
-#####On plotting I was surprised to see Residual sugars not having a relation with the Quality Ratings. The graphs suggested that there was positive correlation between Quality and alcohol Content. And a negative correlation between Quality Ratings and Density, and also pH. On Plotting between Volatile acidity on log scale and pH we find that there is a clear negative correlation between them. We also find that there is a negative correlation between Density on log scale and Alcohol content. 
+On plotting I was surprised to see Residual sugars not having a relation with the Quality Ratings. The graphs suggested that there was positive correlation between Quality and alcohol Content. And a negative correlation between Quality Ratings and Density, and also pH. On Plotting between Volatile acidity on log scale and pH we find that there is a clear negative correlation between them. We also find that there is a negative correlation between Density on log scale and Alcohol content. 
 
 
 
-#####I initially stuggled to understand how there was no relation between the sugar content and Quality of wine. Common perception is that is an important factor. Sugar always influences food items. But as I progressed further, I was able to see more plots and get to the conclusion that it indeed was true. 
+I initially stuggled to understand how there was no relation between the sugar content and Quality of wine. Common perception is that is an important factor. Sugar always influences food items. But as I progressed further, I was able to see more plots and get to the conclusion that it indeed was true. 
 
 
 
-#####As I progressed on my analysis I got a very good clarity and knowledge about my data. The plots gave better insight as to how the factors played out and influenced the Quality of the Red Wine Samples given. There were either positively skewed or normally distributed.
+As I progressed on my analysis I got a very good clarity and knowledge about my data. The plots gave better insight as to how the factors played out and influenced the Quality of the Red Wine Samples given. There were either positively skewed or normally distributed.
 
 
 
-#####Coming to the limitation, it is found that most of the plots have only average values. The values are not evenly distributed. If there had been more observations, it would have been definetly possible.
+Coming to the limitation, it is found that most of the plots have only average values. The values are not evenly distributed. If there had been more observations, it would have been definetly possible.
 
 
 
-#####Another drawback that I thought was the Quality Ratings. There was only one quality rating present. Even a movie will have a few critics. I feel there could have been more ratings given than just one. Maybe that would have given us various insights as to how different people feel about it and the different ways it could have been improved targetting a larger audience. Yes, it would have been more complex. But it would have been all the more, more interesting than just one Rating.
+Another drawback that I thought was the Quality Ratings. There was only one quality rating present. Even a movie will have a few critics. I feel there could have been more ratings given than just one. Maybe that would have given us various insights as to how different people feel about it and the different ways it could have been improved targetting a larger audience. Yes, it would have been more complex. But it would have been all the more, more interesting than just one Rating.
 
 
 
