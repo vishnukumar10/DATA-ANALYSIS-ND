@@ -5,9 +5,12 @@ Part I
 2) Exploring US Bikeshare Date
 3) Investigating a Dataset (tMDB Dataset)
 4) Analyse A/B Test Results
+5) Test a Perceptual Phenomenon (Stroop Effect)
+6) Test a Perceptual Phenomenon (Stroop Effect)
+7) 
 
 Part II
-5) Test a Perceptual Phenomenon (Stroop Effect)
+5) 
 6)
 7)
 8)
