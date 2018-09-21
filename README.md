@@ -9,5 +9,5 @@ Part I
 Part II
 5) Test a Perceptual Phenomenon (Stroop Effect)
 6) Explore and Summarize Data (Red Wine Dataset)
-7) Wrangle and Analyse Data 
+7) Wrangle and Analyse Data
 8) Data Story Telling with Tableau (Baseball Scores)
